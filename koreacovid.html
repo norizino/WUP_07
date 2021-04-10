@@ -215,12 +215,70 @@ basicCC + geom_bar(stat=&quot;identity&quot;, position = &quot;dodge&quot;)</cod
 </div>
 <div id="numerical-results" class="section level2">
 <h2>Numerical results</h2>
+<pre class="r"><code>table1 &lt;- xtabs(~result + Sex, data=kRdata)
+rowPerc(table1)</code></pre>
+<pre><code>##        Sex
+## result    F   M Total
+##   alive  56  44   100
+##   dead   36  64   100</code></pre>
+<pre class="r"><code>colPerc(table1)</code></pre>
+<pre><code>##        Sex
+## result      F   M
+##   alive  98.7  97
+##   dead    1.4   3
+##   Total 100.0 100</code></pre>
+<p>The Numerical results also shows that more females lived while more males died. 56f vs 44m alive and 36f vs 64m dead.</p>
 </div>
 <div id="inferential-results" class="section level2">
 <h2>Inferential results</h2>
+<pre class="r"><code>chisq.test(table1)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+## 
+## data:  table1
+## X-squared = 10, df = 1, p-value = 0.001</code></pre>
+<pre class="r"><code>chisqtestGC(table1)</code></pre>
+<pre><code>## Pearson&#39;s Chi-squared test with Yates&#39; continuity correction 
+## 
+## Observed Counts:
+##        Sex
+## result     F    M
+##   alive 1831 1411
+##   dead    25   44
+## 
+## Counts Expected by Null:
+##        Sex
+## result     F    M
+##   alive 1817 1425
+##   dead    39   30
+## 
+## Contributions to the chi-square statistic:
+##        Sex
+## result     F    M
+##   alive 0.10 0.13
+##   dead  4.84 6.17
+## 
+## 
+## Chi-Square Statistic = 10 
+## Degrees of Freedom of the table = 1 
+## P-Value = 0.0012</code></pre>
+<pre class="r"><code>fisher.test(table1)</code></pre>
+<pre><code>## 
+##  Fisher&#39;s Exact Test for Count Data
+## 
+## data:  table1
+## p-value = 9e-04
+## alternative hypothesis: true odds ratio is not equal to 1
+## 95 percent confidence interval:
+##  1.4 3.9
+## sample estimates:
+## odds ratio 
+##        2.3</code></pre>
+<p>The P-value is .001 and in all the results (observed,expected by Null and chi-square statistics) shows that females survived covid more than men. Resulting in Reject the Null Hypothesis. The odds ratio also shows males are 2.3 more times to die due to covid.</p>
 </div>
 <div id="conclusions" class="section level2">
 <h2>Conclusions</h2>
+<p>In conclution</p>
 </div>
 </div>
 
