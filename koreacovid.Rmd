@@ -1,7 +1,7 @@
 ---
 title: "covid 19"
-author: "Dr K"
-date: "5/2/2020"
+author: "Nicole Orizino"
+date: "Spring 2021"
 output:
   html_document: default
   pdf_document: default
@@ -24,11 +24,15 @@ state of a patient must be died or alive - we adjust that as well
   
 # Question 1 - Is dying independent of sex
 
-
+$H_0$: Covid 19 deaths in Korea, Jam-May 2020 are unrelated 
+$H_A$: There is a relation between deaths in Korea Jan-May 2020 and sex of the patient
 
 
 Table of patients:
 ```{r}
+kRdata$Sex = as.factor(kRdata$Sex)
+kRdata$result = as.factor(kRdata$result)
+
 
 # cross tabulation, patient state by gender
 
@@ -36,24 +40,59 @@ with(kRdata, table(Sex, result))
 
 ```
 
+This chart shows that more males died from covid than female, with a 25 for female and 44 for male.
+
 ## We create two bar charts - one based on frequency and the other on percent, use ggplot commands to do this
 
 `
+```{r}
+dd2 <- kRdata %>% group_by(result,Sex) %>% summarize(count=n()) %>% mutate(prcnt=count/sum(count))
 
+
+# the group_by followed by summarize(count=n())
+
+basicC <- ggplot(dd2,aes(x=Sex,y=count,fill=result))
+basicC + geom_bar(stat="identity",position="dodge")
+
+#Now for percentage plot
+
+basicCC <- ggplot(dd2,aes(x=Sex,y=prcnt*100,fill=result)) 
+basicCC + geom_bar(stat="identity", position = "dodge")
+```
   
 
+The gg plot count graph shows that females who caught Covid survived more than males, with a count of around 2200 for female and 1400 for male, while more males died from covid than female, with a count of about 25 female and 50 male. 
+
+The second gg plot, the percent plot shows that about 55% of females survived while 45% of males survived. And 45% females died and 65% males died from covid.  
+
+Both graphs show that the female sex in Korea survived more that the male sex of those who caught Covid 19.
 
 
-
-
-  
 ## Numerical results
+
+
+```{r}
+table1 <- xtabs(~result + Sex, data=kRdata)
+rowPerc(table1)
+colPerc(table1)
+```
+
+The Numerical results also shows that more females lived while more males died. 56f vs 44m alive and 36f vs 64m dead.
 
 
 ## Inferential results 
 
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisher.test(table1)
+```
 
+
+The P-value is .001 and in all the results (observed,expected by Null and chi-square statistics) shows that females survived covid more than men. Resulting in Reject the Null Hypothesis. 
+The odds ratio also shows males are 2.3 more times to die due to covid.
 
 
 ## Conclusions
 
+The question was is dying independent of sex? The conclusion to this question is, we reject the null hypothesis. The P-value is .001 meaning it is a small number. And all the graphs here show that more females survived covid 19 than male. 
